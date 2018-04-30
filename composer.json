@@ -1,0 +1,14 @@
+{
+    "name": "contamobi/pmobi-oauth2-php-client",
+    "description": "Pmobi Oauth2 Client",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Joubert RedRat",
+            "email": "me+github@redrat.com.br"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
