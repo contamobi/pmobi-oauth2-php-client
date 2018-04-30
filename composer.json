@@ -10,6 +10,11 @@
         }
     ],
     "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "Pmobi\\Oauth2\\": "src/Pmobi/Oauth2/"
+        }
+    },
     "require": {
         "guzzlehttp/guzzle": "~6.0",
         "kamermans/guzzle-oauth2-subscriber": "~1.0"
