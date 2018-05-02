@@ -11,6 +11,7 @@ namespace Pmobi\Oauth2;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use kamermans\OAuth2\OAuth2Middleware;
+use kamermans\OAuth2\Persistence\FileTokenPersistence;
 use Pmobi\Oauth2\GrantType\PmobiCredentials;
 
 /**
@@ -37,11 +38,11 @@ class Middleware
      */
     public static function createFromConfig(array $config): HandlerStack
     {
-        $missing = array_diff(self::$configRequired, array_keys($config));
+        $missingArgs = array_diff(self::$configRequired, array_keys($config));
 
-        if ($missing) {
+        if ($missingArgs) {
             throw new \InvalidArgumentException(
-                'Config is missing the following keys: ' . implode(', ', $missing)
+                'Config is missing the following keys: ' . implode(', ', $missingArgs)
             );
         }
 
@@ -54,6 +55,14 @@ class Middleware
 
         $grantType = new PmobiCredentials($reauthClient, $config);
         $oauth = new OAuth2Middleware($grantType);
+
+        if (isset($config['token_filepath'])) {
+            $tokenFilepath = $config['token_filepath'];
+            unset($config['token_filepath']);
+
+            $tokenPersistence = new FileTokenPersistence($tokenFilepath);
+            $oauth->setTokenPersistence($tokenPersistence);
+        }
 
         $stack = HandlerStack::create();
         $stack->push($oauth);
